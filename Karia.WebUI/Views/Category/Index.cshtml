@@ -1,0 +1,94 @@
+﻿@model IEnumerable<ResultCategoryDto>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container py-5">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1 class="display-4 fw-bold text-primary">
+                    <i class="bi bi-grid-3x3-gap-fill me-3"></i>Kategoriler
+                </h1>
+                <a asp-action="Create" asp-controller="Category" class="btn btn-primary btn-lg shadow-sm">
+                    <i class="bi bi-plus-circle me-2"></i>Yeni Kategori
+                </a>
+            </div>
+            <hr class="border-primary border-2 opacity-50">
+        </div>
+    </div>
+
+    <div class="row g-4">
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var category in Model)
+            {
+                <div class="col-md-6 col-lg-4 col-xl-3">
+                    <div class="card h-100 shadow-sm border-0 hover-lift">
+                        <div class="card-body d-flex flex-column">
+                            <div class="mb-3">
+                                <div class="rounded-circle bg-primary bg-opacity-10 d-inline-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                    <i class="bi bi-tag-fill fs-3 text-primary"></i>
+                                </div>
+                            </div>
+                            <h5 class="card-title fw-bold mb-3">@category.Name</h5>
+                            <p class="text-muted small mb-3">Kategori ID: @category.CategoryId</p>
+                            <div class="mt-auto">
+                                <div class="btn-group w-100" role="group">
+                                    <a asp-action="Details" asp-controller="Category" asp-route-id="@category.CategoryId" class="btn btn-outline-info btn-sm">
+                                        <i class="bi bi-eye"></i> Detay
+                                    </a>
+                                    <a asp-action="Edit" asp-controller="Category" asp-route-id="@category.CategoryId" class="btn btn-outline-warning btn-sm">
+                                        <i class="bi bi-pencil"></i> Düzenle
+                                    </a>
+                                    <a asp-action="Delete" asp-controller="Category" asp-route-id="@category.CategoryId" class="btn btn-outline-danger btn-sm">
+                                        <i class="bi bi-trash"></i> Sil
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12">
+                <div class="alert alert-info text-center py-5" role="alert">
+                    <i class="bi bi-info-circle fs-1 d-block mb-3"></i>
+                    <h4 class="alert-heading">Henüz kategori bulunmamaktadır!</h4>
+                    <p class="mb-0">Yeni bir kategori eklemek için yukarıdaki butona tıklayın.</p>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    .hover-lift {
+        transition: all 0.3s ease;
+    }
+
+        .hover-lift:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 1rem 3rem rgba(0,0,0,.175) !important;
+        }
+
+    .card {
+        border-radius: 15px;
+        overflow: hidden;
+    }
+
+    .btn-group .btn {
+        font-size: 0.875rem;
+    }
+
+    .display-4 {
+        color: #0d6efd;
+    }
+</style>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+}
+
