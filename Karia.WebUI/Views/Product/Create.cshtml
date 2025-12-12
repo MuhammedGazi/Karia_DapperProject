@@ -1,0 +1,323 @@
+﻿@model CreateProductDto
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <!-- Header -->
+            <div class="create-header mb-4">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h2 class="header-title mb-2">
+                            <i class="bi bi-plus-circle-dotted me-2"></i>Yeni Ürün Oluştur
+                        </h2>
+                        <p class="header-subtitle mb-0">Tüm alanları eksiksiz doldurun</p>
+                    </div>
+                    <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                        <a asp-action="Index" asp-controller="Product" class="btn btn-outline-light">
+                            <i class="bi bi-arrow-left me-2"></i>Ürünlere Dön
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Card -->
+            <div class="form-card">
+                <form method="post" asp-action="Create" asp-controller="Product" enctype="multipart/form-data">
+                    <div class="row g-4">
+                        <!-- Sol Kolon -->
+                        <div class="col-md-6">
+                            <div class="form-section">
+                                <h5 class="section-title">
+                                    <i class="bi bi-info-circle me-2"></i>Temel Bilgiler
+                                </h5>
+
+                                <div class="mb-4">
+                                    <label class="form-label">
+                                        <i class="bi bi-tag me-1"></i>Ürün Adı
+                                    </label>
+                                    <input type="text" class="form-control form-control-modern"
+                                           asp-for="Name" placeholder="Örn: iPhone 15 Pro Max" />
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="form-label">
+                                        <i class="bi bi-currency-dollar me-1"></i>Fiyat
+                                    </label>
+                                    <div class="input-group">
+                                        <input type="number" step="0.01" class="form-control form-control-modern"
+                                               asp-for="Price" placeholder="0.00" />
+                                        <span class="input-group-text">₺</span>
+                                    </div>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="form-label">
+                                        <i class="bi bi-folder me-1"></i>Kategori
+                                    </label>
+                                    <select class="form-select form-control-modern"
+                                            asp-for="CategoryId"
+                                            asp-items="@ViewBag.Categories">
+                                        <option value="">Kategori Seçiniz...</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sağ Kolon -->
+                        <div class="col-md-6">
+                            <div class="form-section">
+                                <h5 class="section-title">
+                                    <i class="bi bi-card-image me-2"></i>Görsel Bilgiler
+                                </h5>
+
+                                <div class="mb-4">
+                                    <label class="form-label">
+                                        <i class="bi bi-link-45deg me-1"></i>Görsel URL
+                                    </label>
+                                    <input type="text" class="form-control form-control-modern"
+                                           asp-for="ImageUrl" placeholder="https://example.com/image.jpg" />
+                                </div>
+
+                                <div class="mb-4">
+                                    <div class="image-preview-box">
+                                        <div class="preview-placeholder">
+                                            <i class="bi bi-image"></i>
+                                            <p class="mb-0 mt-2">Görsel Önizlemesi</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Açıklama - Tam Genişlik -->
+                        <div class="col-12">
+                            <div class="form-section">
+                                <h5 class="section-title">
+                                    <i class="bi bi-text-paragraph me-2"></i>Ürün Açıklaması
+                                </h5>
+                                <div class="mb-4">
+                                    <textarea class="form-control form-control-modern"
+                                              asp-for="Description" rows="5"
+                                              placeholder="Ürününüz hakkında detaylı bilgi verin..."></textarea>
+                                    <small class="form-text text-muted mt-2">
+                                        <i class="bi bi-lightbulb me-1"></i>
+                                        İpucu: Ürününüzün özelliklerini ve avantajlarını vurgulayın
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="form-actions">
+                        <button type="reset" class="btn btn-light-custom">
+                            <i class="bi bi-arrow-counterclockwise me-2"></i>Formu Temizle
+                        </button>
+                        <button type="submit" class="btn btn-success-custom">
+                            <i class="bi bi-check2-circle me-2"></i>Ürünü Kaydet
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Info Alert -->
+            <div class="info-alert mt-4">
+                <i class="bi bi-info-circle-fill"></i>
+                <div>
+                    <strong>Bilgilendirme:</strong> Ürün bilgileri kaydedildikten sonra düzenlenebilir.
+                    Lütfen tüm alanları dikkatli doldurun.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        min-height: 100vh;
+    }
+
+    .create-header {
+        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        padding: 2rem;
+        border-radius: 20px;
+        color: white;
+        box-shadow: 0 10px 40px rgba(17, 153, 142, 0.3);
+    }
+
+    .header-title {
+        font-size: 2rem;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    .header-subtitle {
+        font-size: 1rem;
+        opacity: 0.9;
+    }
+
+    .btn-outline-light {
+        border: 2px solid white;
+        color: white;
+        font-weight: 600;
+        padding: 0.6rem 1.5rem;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+    }
+
+        .btn-outline-light:hover {
+            background: white;
+            color: #11998e;
+            transform: translateY(-2px);
+        }
+
+    .form-card {
+        background: white;
+        border-radius: 20px;
+        padding: 3rem;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+    }
+
+    .form-section {
+        background: #f8f9fc;
+        padding: 1.5rem;
+        border-radius: 15px;
+        border-left: 4px solid #11998e;
+    }
+
+    .section-title {
+        color: #2d3748;
+        font-weight: 700;
+        font-size: 1.1rem;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+    }
+
+    .form-label {
+        color: #4a5568;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+    }
+
+    .form-control-modern {
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 0.75rem 1rem;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+    }
+
+        .form-control-modern:focus {
+            border-color: #11998e;
+            box-shadow: 0 0 0 0.2rem rgba(17, 153, 142, 0.15);
+        }
+
+    .input-group-text {
+        background: #11998e;
+        color: white;
+        border: 2px solid #11998e;
+        border-radius: 0 12px 12px 0;
+        font-weight: 600;
+    }
+
+    .image-preview-box {
+        border: 2px dashed #cbd5e0;
+        border-radius: 12px;
+        padding: 2rem;
+        text-align: center;
+        background: white;
+        min-height: 180px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .preview-placeholder i {
+        font-size: 3rem;
+        color: #cbd5e0;
+    }
+
+    .preview-placeholder p {
+        color: #718096;
+        font-size: 0.9rem;
+    }
+
+    .form-actions {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-top: 2rem;
+        padding-top: 2rem;
+        border-top: 2px solid #f1f5f9;
+    }
+
+    .btn-light-custom {
+        background: #f1f5f9;
+        color: #4a5568;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 12px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+        .btn-light-custom:hover {
+            background: #e2e8f0;
+            transform: translateY(-2px);
+        }
+
+    .btn-success-custom {
+        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        color: white;
+        border: none;
+        padding: 1rem 2.5rem;
+        border-radius: 12px;
+        font-weight: 700;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(17, 153, 142, 0.4);
+    }
+
+        .btn-success-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(17, 153, 142, 0.6);
+        }
+
+    .info-alert {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 1.5rem;
+        border-radius: 15px;
+        display: flex;
+        align-items: start;
+        gap: 1rem;
+        box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
+    }
+
+        .info-alert i {
+            font-size: 1.5rem;
+            margin-top: 0.2rem;
+        }
+
+    .form-text {
+        display: block;
+        font-size: 0.875rem;
+    }
+
+    textarea.form-control-modern {
+        resize: vertical;
+        min-height: 120px;
+    }
+
+</style>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+}
+
