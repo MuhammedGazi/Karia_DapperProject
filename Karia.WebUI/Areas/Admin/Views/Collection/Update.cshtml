@@ -1,0 +1,904 @@
+﻿@model UpdateCollectionDto
+@{
+    ViewData["Title"] = "Update";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="update-wrapper">
+    <!-- Particle Background -->
+    <div class="particles-bg">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-xxl-11">
+                <!-- Top Navigation Bar -->
+                <div class="top-nav-bar">
+                    <div class="nav-left">
+                        <a asp-action="Index" asp-controller="Collection" class="nav-btn">
+                            <i class="bi bi-arrow-left"></i>
+                            <span>Koleksiyonlar</span>
+                        </a>
+                        <div class="nav-divider"></div>
+                        <div class="nav-breadcrumb">
+                            <i class="bi bi-pencil-square"></i>
+                            <span>Düzenleme Modu</span>
+                        </div>
+                    </div>
+                    <div class="nav-right">
+                        <button type="button" class="nav-action-btn danger" onclick="if(confirm('Bu koleksiyonu silmek istediğinizden emin misiniz?')) window.location.href='@Url.Action("Delete", "Collection", new { id = Model.CollectionId })'">
+                            <i class="bi bi-trash3"></i>
+                            <span>Sil</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Main Content -->
+                <div class="update-container">
+                    <form method="post" asp-action="Update" asp-controller="Collection" id="updateForm">
+                        <input type="hidden" asp-for="CollectionId" />
+
+                        <div class="row g-4">
+                            <!-- Left Panel - Form -->
+                            <div class="col-lg-8">
+                                <!-- Collection Info Card -->
+                                <div class="info-card">
+                                    <div class="card-header-custom">
+                                        <div class="header-icon">
+                                            <i class="bi bi-info-circle-fill"></i>
+                                        </div>
+                                        <div class="header-text">
+                                            <h3 class="header-title">Koleksiyon Bilgileri</h3>
+                                            <p class="header-desc">ID: #@Model.CollectionId</p>
+                                        </div>
+                                        <div class="header-badge">
+                                            <span class="badge-dot"></span>
+                                            <span>Düzenleniyor</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="card-body-custom">
+                                        <div class="input-group-enhanced">
+                                            <label class="enhanced-label">
+                                                <span class="label-icon-wrapper">
+                                                    <i class="bi bi-bookmark-star-fill"></i>
+                                                </span>
+                                                <span class="label-content">
+                                                    <span class="label-title">Koleksiyon Başlığı</span>
+                                                    <span class="label-hint">Açıklayıcı ve çekici bir başlık seçin</span>
+                                                </span>
+                                            </label>
+                                            <div class="input-wrapper">
+                                                <input type="text" class="enhanced-input" asp-for="Title"
+                                                       placeholder="Koleksiyon başlığını giriniz..."
+                                                       maxlength="100" required />
+                                                <span class="input-focus-border"></span>
+                                            </div>
+                                            <div class="input-footer">
+                                                <span class="footer-info">
+                                                    <i class="bi bi-check-circle"></i>
+                                                    En az 3 karakter gereklidir
+                                                </span>
+                                                <span class="char-counter" data-target="Title">0/100</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="input-group-enhanced">
+                                            <label class="enhanced-label">
+                                                <span class="label-icon-wrapper">
+                                                    <i class="bi bi-text-left"></i>
+                                                </span>
+                                                <span class="label-content">
+                                                    <span class="label-title">Açıklama</span>
+                                                    <span class="label-hint">Koleksiyonunuzun detaylarını yazın</span>
+                                                </span>
+                                            </label>
+                                            <div class="input-wrapper">
+                                                <textarea class="enhanced-input enhanced-textarea" asp-for="Description"
+                                                          placeholder="Koleksiyonunuz hakkında detaylı bilgi verin..."
+                                                          rows="10" maxlength="500"></textarea>
+                                                <span class="input-focus-border"></span>
+                                            </div>
+                                            <div class="input-footer">
+                                                <span class="footer-info">
+                                                    <i class="bi bi-lightbulb"></i>
+                                                    Markdown formatı desteklenmektedir
+                                                </span>
+                                                <span class="char-counter" data-target="Description">0/500</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Action Buttons -->
+                                <div class="action-panel">
+                                    <button type="button" class="action-btn secondary" onclick="history.back()">
+                                        <i class="bi bi-x-lg"></i>
+                                        <span>İptal Et</span>
+                                    </button>
+                                    <button type="button" class="action-btn secondary" onclick="document.getElementById('updateForm').reset()">
+                                        <i class="bi bi-arrow-counterclockwise"></i>
+                                        <span>Değişiklikleri Geri Al</span>
+                                    </button>
+                                    <button type="submit" class="action-btn primary">
+                                        <span class="btn-glow"></span>
+                                        <i class="bi bi-check2-circle"></i>
+                                        <span>Değişiklikleri Kaydet</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Right Panel - Preview & Image -->
+                            <div class="col-lg-4">
+                                <!-- Image Manager -->
+                                <div class="image-manager-card">
+                                    <div class="manager-header">
+                                        <div class="header-icon">
+                                            <i class="bi bi-image-fill"></i>
+                                        </div>
+                                        <h4 class="manager-title">Koleksiyon Görseli</h4>
+                                    </div>
+
+                                    <div class="image-preview-container">
+                                        <div class="preview-wrapper" id="imagePreviewWrapper">
+                                            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                                            {
+                                                <img src="@Model.ImageUrl" alt="@Model.Title" class="preview-img" id="previewImg" />
+                                                <div class="preview-overlay">
+                                                    <button type="button" class="overlay-action" onclick="document.getElementById('imageUrlInput').focus()">
+                                                        <i class="bi bi-pencil"></i>
+                                                    </button>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="preview-empty">
+                                                    <i class="bi bi-image"></i>
+                                                    <span>Görsel Yok</span>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+
+                                    <div class="manager-body">
+                                        <div class="input-group-enhanced compact">
+                                            <label class="enhanced-label compact">
+                                                <i class="bi bi-link-45deg me-2"></i>
+                                                Görsel URL
+                                            </label>
+                                            <div class="input-wrapper">
+                                                <input type="text" class="enhanced-input" asp-for="ImageUrl"
+                                                       id="imageUrlInput"
+                                                       placeholder="https://example.com/image.jpg" />
+                                                <span class="input-focus-border"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="manager-tips">
+                                            <div class="tip-header">
+                                                <i class="bi bi-info-circle"></i>
+                                                <span>Görsel Önerileri</span>
+                                            </div>
+                                            <ul class="tip-list">
+                                                <li><i class="bi bi-check2"></i> Minimum 1200x800 piksel</li>
+                                                <li><i class="bi bi-check2"></i> JPG veya PNG formatı</li>
+                                                <li><i class="bi bi-check2"></i> Maksimum 5MB boyut</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Quick Stats -->
+                                <div class="stats-card">
+                                    <div class="stat-item">
+                                        <div class="stat-icon">
+                                            <i class="bi bi-eye"></i>
+                                        </div>
+                                        <div class="stat-content">
+                                            <span class="stat-label">Görüntülenme</span>
+                                            <span class="stat-value">--</span>
+                                        </div>
+                                    </div>
+                                    <div class="stat-divider"></div>
+                                    <div class="stat-item">
+                                        <div class="stat-icon">
+                                            <i class="bi bi-calendar"></i>
+                                        </div>
+                                        <div class="stat-content">
+                                            <span class="stat-label">Oluşturulma</span>
+                                            <span class="stat-value">--</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .update-wrapper {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .particles-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        pointer-events: none;
+    }
+
+    .particle {
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        background: rgba(255, 255, 255, 0.5);
+        border-radius: 50%;
+        animation: float-particle 20s infinite;
+    }
+
+        .particle:nth-child(1) {
+            left: 10%;
+            animation-delay: 0s;
+            animation-duration: 15s;
+        }
+
+        .particle:nth-child(2) {
+            left: 30%;
+            animation-delay: 3s;
+            animation-duration: 20s;
+        }
+
+        .particle:nth-child(3) {
+            left: 50%;
+            animation-delay: 6s;
+            animation-duration: 18s;
+        }
+
+        .particle:nth-child(4) {
+            left: 70%;
+            animation-delay: 9s;
+            animation-duration: 22s;
+        }
+
+        .particle:nth-child(5) {
+            left: 90%;
+            animation-delay: 12s;
+            animation-duration: 17s;
+        }
+
+    @@keyframes float-particle {
+        0%
+
+    {
+        transform: translateY(100vh) scale(0);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    90% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-100vh) scale(1);
+        opacity: 0;
+    }
+
+    }
+
+    .top-nav-bar {
+        position: relative;
+        z-index: 10;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 20px;
+        padding: 1rem 1.5rem;
+        margin-bottom: 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .nav-left {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .nav-btn {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
+        color: white;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateX(-3px);
+            color: white;
+        }
+
+    .nav-divider {
+        width: 1px;
+        height: 30px;
+        background: rgba(255, 255, 255, 0.2);
+    }
+
+    .nav-breadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 0.95rem;
+    }
+
+    .nav-right {
+        display: flex;
+        gap: 1rem;
+    }
+
+    .nav-action-btn {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+        .nav-action-btn.danger:hover {
+            background: #dc3545;
+            border-color: #dc3545;
+        }
+
+    .update-container {
+        position: relative;
+        z-index: 1;
+    }
+
+    .info-card,
+    .image-manager-card,
+    .stats-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 25px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+        margin-bottom: 1.5rem;
+    }
+
+    .card-header-custom {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .header-icon {
+        width: 50px;
+        height: 50px;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.5rem;
+    }
+
+    .header-text {
+        flex: 1;
+    }
+
+    .header-title {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: white;
+        margin: 0 0 0.25rem 0;
+    }
+
+    .header-desc {
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.8);
+        margin: 0;
+    }
+
+    .header-badge {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        color: white;
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+
+    .badge-dot {
+        width: 8px;
+        height: 8px;
+        background: #10b981;
+        border-radius: 50%;
+        animation: pulse-dot 2s ease-in-out infinite;
+    }
+
+    @@keyframes pulse-dot {
+        0%, 100%
+
+    {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.5;
+        transform: scale(1.2);
+    }
+
+    }
+
+    .card-body-custom {
+        padding: 2rem;
+    }
+
+    .input-group-enhanced {
+        margin-bottom: 2rem;
+    }
+
+        .input-group-enhanced.compact {
+            margin-bottom: 1rem;
+        }
+
+    .enhanced-label {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+
+        .enhanced-label.compact {
+            align-items: center;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #475569;
+        }
+
+    .label-icon-wrapper {
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.2rem;
+        flex-shrink: 0;
+    }
+
+    .label-content {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+
+    .label-title {
+        font-size: 1rem;
+        font-weight: 700;
+        color: #1e293b;
+    }
+
+    .label-hint {
+        font-size: 0.85rem;
+        color: #64748b;
+    }
+
+    .input-wrapper {
+        position: relative;
+    }
+
+    .enhanced-input {
+        width: 100%;
+        padding: 1rem 1.25rem;
+        border: 2px solid #e2e8f0;
+        border-radius: 15px;
+        font-size: 1rem;
+        color: #1e293b;
+        background: white;
+        transition: all 0.3s ease;
+    }
+
+        .enhanced-input:focus {
+            outline: none;
+            border-color: transparent;
+            padding-left: 1.5rem;
+        }
+
+            .enhanced-input:focus + .input-focus-border {
+                width: 100%;
+            }
+
+    .input-focus-border {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: linear-gradient(90deg, #667eea, #764ba2);
+        transition: width 0.4s ease;
+        border-radius: 15px;
+    }
+
+    .enhanced-textarea {
+        resize: vertical;
+        min-height: 180px;
+        font-family: inherit;
+        line-height: 1.6;
+    }
+
+    .input-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 0.75rem;
+        font-size: 0.85rem;
+    }
+
+    .footer-info {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #64748b;
+    }
+
+        .footer-info i {
+            color: #10b981;
+        }
+
+    .char-counter {
+        font-weight: 700;
+        color: #667eea;
+    }
+
+    .action-panel {
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+        padding: 2rem;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 25px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    .action-btn {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 1rem 1.75rem;
+        border: none;
+        border-radius: 15px;
+        font-weight: 700;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .action-btn.secondary {
+            background: #f1f5f9;
+            color: #64748b;
+        }
+
+            .action-btn.secondary:hover {
+                background: #e2e8f0;
+                transform: translateY(-2px);
+            }
+
+        .action-btn.primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+            .action-btn.primary:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+            }
+
+    .btn-glow {
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+        transform: scale(0);
+        transition: transform 0.6s ease;
+    }
+
+    .action-btn.primary:hover .btn-glow {
+        transform: scale(1);
+    }
+
+    .manager-header {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        padding: 1.25rem 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+        .manager-header .header-icon {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+    .manager-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: white;
+        margin: 0;
+    }
+
+    .image-preview-container {
+        padding: 1.5rem;
+        background: #f8fafc;
+    }
+
+    .preview-wrapper {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 4/3;
+        border-radius: 15px;
+        overflow: hidden;
+        background: white;
+    }
+
+    .preview-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .preview-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .preview-wrapper:hover .preview-overlay {
+        opacity: 1;
+    }
+
+    .overlay-action {
+        width: 50px;
+        height: 50px;
+        background: white;
+        border: none;
+        border-radius: 50%;
+        color: #667eea;
+        font-size: 1.3rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+        .overlay-action:hover {
+            transform: scale(1.2) rotate(10deg);
+        }
+
+    .preview-empty {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: #cbd5e0;
+        gap: 0.5rem;
+    }
+
+        .preview-empty i {
+            font-size: 3rem;
+        }
+
+    .manager-body {
+        padding: 1.5rem;
+    }
+
+    .manager-tips {
+        margin-top: 1.5rem;
+        padding: 1rem;
+        background: #f1f5f9;
+        border-radius: 12px;
+    }
+
+    .tip-header {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #475569;
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+    }
+
+    .tip-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+        .tip-list li {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #64748b;
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+
+            .tip-list li:last-child {
+                margin-bottom: 0;
+            }
+
+        .tip-list i {
+            color: #10b981;
+        }
+
+    .stats-card {
+        padding: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+    }
+
+    .stat-item {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .stat-icon {
+        width: 45px;
+        height: 45px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.2rem;
+    }
+
+    .stat-content {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .stat-label {
+        font-size: 0.8rem;
+        color: #64748b;
+    }
+
+    .stat-value {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #1e293b;
+    }
+
+    .stat-divider {
+        width: 1px;
+        height: 40px;
+        background: #e2e8f0;
+    }
+
+    @@media (max-width: 992px) {
+        .action-panel
+
+    {
+        flex-wrap: wrap;
+    }
+
+    .action-btn {
+        flex: 1 1 100%;
+        justify-content: center;
+    }
+
+    }
+</style>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('updateForm');
+            const imageInput = document.getElementById('imageUrlInput');
+            const previewWrapper = document.getElementById('imagePreviewWrapper');
+
+            // Character counters
+            const inputs = form.querySelectorAll('[maxlength]');
+            inputs.forEach(input => {
+                const counter = form.querySelector(`.char-counter[data-target="${input.name}"]`);
+                if (counter) {
+                    function updateCounter() {
+                        const max = input.getAttribute('maxlength');
+                        counter.textContent = `${input.value.length}/${max}`;
+                    }
+                    input.addEventListener('input', updateCounter);
+                    updateCounter();
+                }
+            });
+
+            // Image preview update
+            if (imageInput) {
+                imageInput.addEventListener('input', function() {
+                    const url = this.value.trim();
+                    if (url) {
+                        previewWrapper.innerHTML = `
+                            <img src="${url}" alt="Preview" class="preview-img" id="previewImg"
+                                 onerror="this.parentElement.innerHTML='<div class=\\'preview-empty\\'><i class=\\'bi bi-exclamation-triangle\\'></i><span>Geçersiz URL</span></div>'">
+                            <div class="preview-overlay">
+                                <button type="button" class="overlay-action" onclick="document.getElementById('imageUrlInput').focus()">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                            </div>
+                        `;
+                    }
+                });
+            }
+        });
+    </script>
+}
+

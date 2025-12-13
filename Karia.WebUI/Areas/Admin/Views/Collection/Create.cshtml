@@ -1,0 +1,760 @@
+﻿@model ResultCollectionDto
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="create-wrapper">
+    <div class="container py-5">
+        <!-- Animated Background -->
+        <div class="animated-bg">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-xl-10">
+                <!-- Page Header -->
+                <div class="create-header">
+                    <button onclick="history.back()" class="back-button">
+                        <i class="bi bi-arrow-left"></i>
+                    </button>
+                    <div class="header-content">
+                        <div class="header-icon">
+                            <i class="bi bi-stars"></i>
+                        </div>
+                        <div class="header-text">
+                            <h1 class="header-title">Yeni Koleksiyon Oluştur</h1>
+                            <p class="header-subtitle">Harika bir koleksiyon oluşturmak için birkaç adım kaldı</p>
+                        </div>
+                    </div>
+                    <div class="header-progress">
+                        <div class="progress-circle">
+                            <svg width="60" height="60">
+                                <circle cx="30" cy="30" r="28" stroke="#e0e0e0" stroke-width="4" fill="none" />
+                                <circle cx="30" cy="30" r="28" stroke="#667eea" stroke-width="4" fill="none"
+                                        stroke-dasharray="176" stroke-dashoffset="176" class="progress-bar" />
+                            </svg>
+                            <span class="progress-text">0%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Form -->
+                <div class="create-content">
+                    <form method="post" asp-action="Create" asp-controller="Collection" id="collectionForm">
+                        <div class="row g-4">
+                            <!-- Left Section - Main Info -->
+                            <div class="col-lg-7">
+                                <div class="form-card">
+                                    <div class="card-label">
+                                        <span class="label-number">01</span>
+                                        <span class="label-text">Temel Bilgiler</span>
+                                    </div>
+
+                                    <div class="form-group-modern">
+                                        <label class="floating-label">
+                                            <i class="bi bi-tag-fill label-icon"></i>
+                                            Koleksiyon Başlığı
+                                        </label>
+                                        <input type="text" class="modern-input" asp-for="Title"
+                                               placeholder="Koleksiyon başlığını giriniz..."
+                                               maxlength="100" />
+                                        <div class="input-helper">
+                                            <span class="char-count">0/100</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group-modern">
+                                        <label class="floating-label">
+                                            <i class="bi bi-text-paragraph label-icon"></i>
+                                            Açıklama
+                                        </label>
+                                        <textarea class="modern-input modern-textarea" asp-for="Description"
+                                                  placeholder="Koleksiyonunuz hakkında detaylı bilgi verin..."
+                                                  rows="8" maxlength="500"></textarea>
+                                        <div class="input-helper">
+                                            <i class="bi bi-lightbulb-fill me-2"></i>
+                                            <span class="helper-text">Açıklayıcı ve çekici bir açıklama yazın</span>
+                                            <span class="char-count">0/500</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Right Section - Image Upload -->
+                            <div class="col-lg-5">
+                                <div class="form-card">
+                                    <div class="card-label">
+                                        <span class="label-number">02</span>
+                                        <span class="label-text">Görsel Ekle</span>
+                                    </div>
+
+                                    <div class="image-upload-section">
+                                        <div class="upload-preview" id="imagePreview">
+                                            <div class="preview-placeholder">
+                                                <i class="bi bi-cloud-upload"></i>
+                                                <p class="preview-text">Görsel URL'si ekleyin</p>
+                                                <span class="preview-hint">veya aşağıdaki alana yapıştırın</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group-modern mt-3">
+                                            <label class="floating-label">
+                                                <i class="bi bi-link-45deg label-icon"></i>
+                                                Görsel URL
+                                            </label>
+                                            <input type="text" class="modern-input" asp-for="ImageUrl"
+                                                   id="imageUrlInput"
+                                                   placeholder="https://example.com/image.jpg" />
+                                            <div class="input-helper">
+                                                <i class="bi bi-info-circle me-2"></i>
+                                                <span class="helper-text">Geçerli bir görsel URL'si girin</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="upload-tips">
+                                            <div class="tip-item">
+                                                <i class="bi bi-check-circle-fill"></i>
+                                                <span>En az 1200x800 piksel önerilir</span>
+                                            </div>
+                                            <div class="tip-item">
+                                                <i class="bi bi-check-circle-fill"></i>
+                                                <span>JPG, PNG formatları desteklenir</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="form-actions">
+                            <div class="action-left">
+                                <button type="button" class="btn-secondary-action" onclick="history.back()">
+                                    <i class="bi bi-x-circle"></i>
+                                    <span>İptal Et</span>
+                                </button>
+                                <button type="reset" class="btn-secondary-action" id="resetBtn">
+                                    <i class="bi bi-arrow-counterclockwise"></i>
+                                    <span>Sıfırla</span>
+                                </button>
+                            </div>
+                            <button type="submit" class="btn-primary-action">
+                                <span class="btn-shine"></span>
+                                <i class="bi bi-check-circle-fill"></i>
+                                <span>Koleksiyonu Oluştur</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Help Section -->
+                <div class="help-card">
+                    <div class="help-icon">
+                        <i class="bi bi-question-circle-fill"></i>
+                    </div>
+                    <div class="help-content">
+                        <h5 class="help-title">Yardıma mı ihtiyacınız var?</h5>
+                        <p class="help-text">Koleksiyon oluştururken herhangi bir sorun yaşarsanız destek ekibimizle iletişime geçebilirsiniz.</p>
+                    </div>
+                    <button class="help-button">
+                        <i class="bi bi-chat-dots-fill"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .create-wrapper {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7e22ce 100%);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .animated-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        pointer-events: none;
+    }
+
+    .shape {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(2px);
+    }
+
+    .shape-1 {
+        width: 500px;
+        height: 500px;
+        top: -250px;
+        right: -100px;
+        animation: float 15s ease-in-out infinite;
+    }
+
+    .shape-2 {
+        width: 300px;
+        height: 300px;
+        bottom: -150px;
+        left: -50px;
+        animation: float 20s ease-in-out infinite reverse;
+    }
+
+    .shape-3 {
+        width: 400px;
+        height: 400px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        animation: pulse 10s ease-in-out infinite;
+    }
+
+    @@keyframes float {
+        0%, 100%
+
+    {
+        transform: translateY(0) rotate(0deg);
+    }
+
+    50% {
+        transform: translateY(-30px) rotate(10deg);
+    }
+
+    }
+
+    @@keyframes pulse {
+        0%, 100%
+
+    {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.3;
+    }
+
+    50% {
+        transform: translate(-50%, -50%) scale(1.2);
+        opacity: 0.1;
+    }
+
+    }
+
+    .create-header {
+        position: relative;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-radius: 25px;
+        padding: 2.5rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+    }
+
+    .back-button {
+        width: 50px;
+        height: 50px;
+        border-radius: 15px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        color: white;
+        font-size: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        flex-shrink: 0;
+    }
+
+        .back-button:hover {
+            transform: translateX(-5px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.5);
+        }
+
+    .header-content {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        flex: 1;
+    }
+
+    .header-icon {
+        width: 70px;
+        height: 70px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 2rem;
+        animation: rotate 10s linear infinite;
+    }
+
+    @@keyframes rotate {
+        from
+
+    {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+
+    }
+
+    .header-title {
+        font-size: 2rem;
+        font-weight: 800;
+        color: #1e293b;
+        margin: 0 0 0.5rem 0;
+    }
+
+    .header-subtitle {
+        font-size: 1rem;
+        color: #64748b;
+        margin: 0;
+    }
+
+    .progress-circle {
+        position: relative;
+        width: 60px;
+        height: 60px;
+    }
+
+        .progress-circle svg {
+            transform: rotate(-90deg);
+        }
+
+    .progress-bar {
+        transition: stroke-dashoffset 0.5s ease;
+    }
+
+    .progress-text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: #667eea;
+    }
+
+    .create-content {
+        position: relative;
+        z-index: 1;
+    }
+
+    .form-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-radius: 25px;
+        padding: 2.5rem;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        height: 100%;
+    }
+
+    .card-label {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .label-number {
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 1.1rem;
+    }
+
+    .label-text {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #1e293b;
+    }
+
+    .form-group-modern {
+        margin-bottom: 2rem;
+    }
+
+    .floating-label {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #475569;
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+        font-size: 0.95rem;
+    }
+
+    .label-icon {
+        color: #667eea;
+        font-size: 1.1rem;
+    }
+
+    .modern-input {
+        width: 100%;
+        padding: 1rem 1.25rem;
+        border: 2px solid #e2e8f0;
+        border-radius: 15px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: white;
+        color: #1e293b;
+    }
+
+        .modern-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+        }
+
+    .modern-textarea {
+        resize: vertical;
+        min-height: 150px;
+        font-family: inherit;
+    }
+
+    .input-helper {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 0.5rem;
+        font-size: 0.85rem;
+        color: #94a3b8;
+    }
+
+    .helper-text {
+        display: flex;
+        align-items: center;
+        flex: 1;
+    }
+
+    .char-count {
+        font-weight: 600;
+        color: #667eea;
+    }
+
+    .image-upload-section {
+        position: relative;
+    }
+
+    .upload-preview {
+        width: 100%;
+        aspect-ratio: 4/3;
+        border: 3px dashed #cbd5e0;
+        border-radius: 20px;
+        background: #f8fafc;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+        .upload-preview:hover {
+            border-color: #667eea;
+            background: #f1f5f9;
+        }
+
+    .preview-placeholder {
+        text-align: center;
+        color: #94a3b8;
+    }
+
+        .preview-placeholder i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+    .preview-text {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin: 0 0 0.5rem 0;
+        color: #64748b;
+    }
+
+    .preview-hint {
+        font-size: 0.9rem;
+        color: #94a3b8;
+    }
+
+    .preview-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .upload-tips {
+        margin-top: 1.5rem;
+        padding: 1rem;
+        background: #f1f5f9;
+        border-radius: 12px;
+    }
+
+    .tip-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        color: #64748b;
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+    }
+
+        .tip-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .tip-item i {
+            color: #10b981;
+            font-size: 1rem;
+        }
+
+    .form-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        margin-top: 2rem;
+        padding: 2rem;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-radius: 25px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    .action-left {
+        display: flex;
+        gap: 1rem;
+    }
+
+    .btn-secondary-action {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 1rem 1.5rem;
+        background: #f1f5f9;
+        border: 2px solid #e2e8f0;
+        border-radius: 15px;
+        color: #64748b;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+        .btn-secondary-action:hover {
+            background: #e2e8f0;
+            border-color: #cbd5e0;
+            transform: translateY(-2px);
+        }
+
+    .btn-primary-action {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem 2.5rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        border-radius: 15px;
+        color: white;
+        font-weight: 700;
+        font-size: 1.05rem;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+    }
+
+        .btn-primary-action:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+        }
+
+    .btn-shine {
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        transition: left 0.5s ease;
+    }
+
+    .btn-primary-action:hover .btn-shine {
+        left: 100%;
+    }
+
+    .help-card {
+        margin-top: 2rem;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-radius: 20px;
+        padding: 1.5rem;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+    }
+
+    .help-icon {
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.5rem;
+        flex-shrink: 0;
+    }
+
+    .help-content {
+        flex: 1;
+    }
+
+    .help-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #1e293b;
+        margin: 0 0 0.25rem 0;
+    }
+
+    .help-text {
+        font-size: 0.9rem;
+        color: #64748b;
+        margin: 0;
+    }
+
+    .help-button {
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        border-radius: 15px;
+        color: white;
+        font-size: 1.3rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+        .help-button:hover {
+            transform: scale(1.1) rotate(10deg);
+        }
+
+    @@media (max-width: 992px) {
+        .form-actions
+
+    {
+        flex-direction: column;
+    }
+
+    .action-left {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .btn-secondary-action,
+    .btn-primary-action {
+        width: 100%;
+        justify-content: center;
+    }
+
+    }
+</style>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('collectionForm');
+            const titleInput = form.querySelector('input[asp-for="Title"]');
+            const descInput = form.querySelector('textarea[asp-for="Description"]');
+            const imageInput = document.getElementById('imageUrlInput');
+            const imagePreview = document.getElementById('imagePreview');
+            const progressBar = document.querySelector('.progress-bar');
+            const progressText = document.querySelector('.progress-text');
+
+            // Character counter
+            function updateCharCount(input) {
+                const container = input.closest('.form-group-modern');
+                const counter = container.querySelector('.char-count');
+                if (counter) {
+                    const maxLength = input.getAttribute('maxlength') || 0;
+                    counter.textContent = `${input.value.length}/${maxLength}`;
+                }
+            }
+
+            titleInput?.addEventListener('input', function() {
+                updateCharCount(this);
+                updateProgress();
+            });
+
+            descInput?.addEventListener('input', function() {
+                updateCharCount(this);
+                updateProgress();
+            });
+
+            // Image preview
+            imageInput?.addEventListener('input', function() {
+                const url = this.value.trim();
+                if (url) {
+                    imagePreview.innerHTML = `<img src="${url}" class="preview-image" onerror="this.parentElement.innerHTML='<div class=\\'preview-placeholder\\'><i class=\\'bi bi-exclamation-triangle\\'></i><p class=\\'preview-text\\'>Geçersiz görsel URL</p></div>'">`;
+                } else {
+                    imagePreview.innerHTML = '<div class="preview-placeholder"><i class="bi bi-cloud-upload"></i><p class="preview-text">Görsel URL\'si ekleyin</p><span class="preview-hint">veya aşağıdaki alana yapıştırın</span></div>';
+                }
+                updateProgress();
+            });
+
+            // Progress calculation
+            function updateProgress() {
+                let progress = 0;
+                if (titleInput?.value.trim()) progress += 40;
+                if (descInput?.value.trim()) progress += 30;
+                if (imageInput?.value.trim()) progress += 30;
+
+                const dashoffset = 176 - (176 * progress / 100);
+                progressBar.style.strokeDashoffset = dashoffset;
+                progressText.textContent = progress + '%';
+            }
+
+            // Reset button
+            document.getElementById('resetBtn')?.addEventListener('click', function() {
+                setTimeout(() => {
+                    imagePreview.innerHTML = '<div class="preview-placeholder"><i class="bi bi-cloud-upload"></i><p class="preview-text">Görsel URL\'si ekleyin</p><span class="preview-hint">veya aşağıdaki alana yapıştırın</span></div>';
+                    updateProgress();
+                    document.querySelectorAll('.char-count').forEach(counter => {
+                        counter.textContent = counter.textContent.replace(/\d+/, '0');
+                    });
+                }, 0);
+            });
+
+            updateProgress();
+        });
+    </script>
+}
+

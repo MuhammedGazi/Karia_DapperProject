@@ -1,0 +1,551 @@
+﻿@model IEnumerable<ResultCollectionDto>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="collections-wrapper">
+    <div class="container-fluid px-4 py-5">
+        <!-- Hero Header -->
+        <div class="hero-header mb-5">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <span class="hero-badge">
+                        <i class="bi bi-collection"></i>
+                        Koleksiyon Galerisi
+                    </span>
+                    <h1 class="hero-title">Koleksiyonlarınızı Keşfedin</h1>
+                    <p class="hero-subtitle">Özenle hazırlanmış koleksiyonlarınızı görüntüleyin ve yönetin</p>
+                </div>
+                <div class="hero-actions">
+                    <a asp-action="Create" asp-controller="Collection" class="btn-hero-primary">
+                        <span class="btn-icon">
+                            <i class="bi bi-plus-circle-fill"></i>
+                        </span>
+                        <span class="btn-text">Yeni Koleksiyon</span>
+                    </a>
+                </div>
+            </div>
+            <div class="hero-decoration">
+                <div class="decoration-circle circle-1"></div>
+                <div class="decoration-circle circle-2"></div>
+                <div class="decoration-circle circle-3"></div>
+            </div>
+        </div>
+
+        <!-- Collections Grid -->
+        @if (Model != null && Model.Any())
+        {
+            <div class="collections-grid">
+                @foreach (var collection in Model)
+                {
+                    <div class="collection-item">
+                        <div class="collection-card">
+                            <div class="card-image-container">
+                                @if (!string.IsNullOrEmpty(collection.ImageUrl))
+                                {
+                                    <img src="@collection.ImageUrl" alt="@collection.Title" class="card-image" />
+                                }
+                                else
+                                {
+                                    <div class="card-image-placeholder">
+                                        <i class="bi bi-collection-fill"></i>
+                                        <span>Görsel Yok</span>
+                                    </div>
+                                }
+                                <div class="card-overlay">
+                                    <div class="overlay-content">
+                                        <a asp-action="Details" asp-controller="Collection" asp-route-id="@collection.CollectionId" 
+                                           class="overlay-btn btn-view">
+                                            <i class="bi bi-eye-fill"></i>
+                                        </a>
+                                        <a asp-action="Update" asp-controller="Collection" asp-route-id="@collection.CollectionId" 
+                                           class="overlay-btn btn-edit">
+                                            <i class="bi bi-pencil-fill"></i>
+                                        </a>
+                                        <a asp-action="Delete" asp-controller="Collection" asp-route-id="@collection.CollectionId" 
+                                           class="overlay-btn btn-delete">
+                                            <i class="bi bi-trash-fill"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <span class="collection-id-badge">#@collection.CollectionId</span>
+                            </div>
+                            <div class="card-content">
+                                <h3 class="card-title">@collection.Title</h3>
+                                <p class="card-description">
+                                    @if (!string.IsNullOrEmpty(collection.Description))
+                                    {
+                                        @(collection.Description.Length > 100 ? collection.Description.Substring(0, 100) + "..." : collection.Description)
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">Açıklama bulunmuyor</span>
+                                    }
+                                </p>
+                                <div class="card-footer-actions">
+                                    <a asp-action="Update" asp-controller="Collection" asp-route-id="@collection.CollectionId" 
+                                       class="card-btn">
+                                        <i class="bi bi-pencil me-2"></i>Düzenle
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="empty-state-container">
+                <div class="empty-state">
+                    <div class="empty-icon">
+                        <i class="bi bi-collection"></i>
+                    </div>
+                    <h2 class="empty-title">Henüz Koleksiyon Yok</h2>
+                    <p class="empty-text">İlk koleksiyonunuzu oluşturarak başlayın ve içeriklerinizi düzenlemeye başlayın.</p>
+                    <a asp-action="Create" asp-controller="Collection" class="btn-empty-action">
+                        <i class="bi bi-plus-circle-fill me-2"></i>
+                        İlk Koleksiyonu Oluştur
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    .collections-wrapper {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .collections-wrapper::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: 
+            radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%),
+            radial-gradient(circle at 80% 80%, rgba(255,255,255,0.1) 0%, transparent 50%);
+        pointer-events: none;
+    }
+
+    .hero-header {
+        position: relative;
+        z-index: 10;
+    }
+
+    .hero-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 2rem;
+    }
+
+    .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: rgba(255,255,255,0.2);
+        padding: 0.5rem 1.25rem;
+        border-radius: 50px;
+        color: white;
+        font-size: 0.9rem;
+        font-weight: 600;
+        backdrop-filter: blur(10px);
+        margin-bottom: 1rem;
+    }
+
+    .hero-title {
+        font-size: 3.5rem;
+        font-weight: 800;
+        color: white;
+        margin: 0 0 1rem 0;
+        text-shadow: 0 2px 20px rgba(0,0,0,0.2);
+    }
+
+    .hero-subtitle {
+        font-size: 1.2rem;
+        color: rgba(255,255,255,0.9);
+        margin: 0;
+    }
+
+    .btn-hero-primary {
+        display: inline-flex;
+        align-items: center;
+        gap: 1rem;
+        background: white;
+        color: #667eea;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        font-weight: 700;
+        font-size: 1.1rem;
+        text-decoration: none;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        transition: all 0.3s ease;
+        position: relative;
+        z-index: 10;
+    }
+
+    .btn-hero-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        color: #667eea;
+    }
+
+    .btn-icon {
+        font-size: 1.5rem;
+        display: flex;
+        align-items: center;
+    }
+
+    .hero-decoration {
+        position: absolute;
+        top: -50%;
+        right: -10%;
+        width: 600px;
+        height: 600px;
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    .decoration-circle {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.1);
+        backdrop-filter: blur(2px);
+    }
+
+    .circle-1 {
+        width: 400px;
+        height: 400px;
+        top: 0;
+        right: 0;
+        animation: float 6s ease-in-out infinite;
+    }
+
+    .circle-2 {
+        width: 250px;
+        height: 250px;
+        top: 100px;
+        right: 150px;
+        animation: float 8s ease-in-out infinite;
+    }
+
+    .circle-3 {
+        width: 150px;
+        height: 150px;
+        top: 250px;
+        right: 50px;
+        animation: float 10s ease-in-out infinite;
+    }
+
+    @@keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-20px); }
+    }
+
+    .collections-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 2rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .collection-item {
+        animation: fadeInUp 0.6s ease forwards;
+        opacity: 0;
+    }
+
+    .collection-item:nth-child(1) { animation-delay: 0.1s; }
+    .collection-item:nth-child(2) { animation-delay: 0.2s; }
+    .collection-item:nth-child(3) { animation-delay: 0.3s; }
+    .collection-item:nth-child(4) { animation-delay: 0.4s; }
+    .collection-item:nth-child(5) { animation-delay: 0.5s; }
+    .collection-item:nth-child(6) { animation-delay: 0.6s; }
+
+    @@keyframes fadeInUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+    }
+
+    .collection-card {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .collection-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    }
+
+    .card-image-container {
+        position: relative;
+        width: 100%;
+        padding-top: 66.67%;
+        overflow: hidden;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    }
+
+    .card-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s ease;
+    }
+
+    .collection-card:hover .card-image {
+        transform: scale(1.1);
+    }
+
+    .card-image-placeholder {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: #94a3b8;
+        gap: 1rem;
+    }
+
+    .card-image-placeholder i {
+        font-size: 4rem;
+    }
+
+    .card-image-placeholder span {
+        font-size: 1rem;
+        font-weight: 600;
+    }
+
+    .card-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .collection-card:hover .card-overlay {
+        opacity: 1;
+    }
+
+    .overlay-content {
+        display: flex;
+        gap: 1rem;
+        transform: translateY(20px);
+        transition: transform 0.3s ease;
+    }
+
+    .collection-card:hover .overlay-content {
+        transform: translateY(0);
+    }
+
+    .overlay-btn {
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: white;
+        border-radius: 50%;
+        color: #667eea;
+        font-size: 1.2rem;
+        transition: all 0.3s ease;
+        text-decoration: none;
+    }
+
+    .overlay-btn:hover {
+        transform: scale(1.2) rotate(10deg);
+    }
+
+    .btn-view:hover { color: #17a2b8; }
+    .btn-edit:hover { color: #ffc107; }
+    .btn-delete:hover { color: #dc3545; }
+
+    .collection-id-badge {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        background: rgba(0,0,0,0.7);
+        color: white;
+        padding: 0.4rem 1rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 700;
+        backdrop-filter: blur(10px);
+    }
+
+    .card-content {
+        padding: 1.75rem;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .card-title {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: #1e293b;
+        margin: 0 0 1rem 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+
+    .card-description {
+        color: #64748b;
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin: 0 0 1.5rem 0;
+        flex-grow: 1;
+    }
+
+    .card-footer-actions {
+        border-top: 2px solid #f1f5f9;
+        padding-top: 1rem;
+        margin-top: auto;
+    }
+
+    .card-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        padding: 0.75rem 1.5rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 12px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .card-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        color: white;
+    }
+
+    .empty-state-container {
+        position: relative;
+        z-index: 1;
+        min-height: 60vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .empty-state {
+        text-align: center;
+        background: white;
+        padding: 4rem 3rem;
+        border-radius: 30px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        max-width: 500px;
+    }
+
+    .empty-icon {
+        font-size: 6rem;
+        color: #cbd5e0;
+        margin-bottom: 1.5rem;
+        animation: bounce 2s ease-in-out infinite;
+    }
+
+    @@keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-20px); }
+    }
+
+    .empty-title {
+        font-size: 2rem;
+        font-weight: 800;
+        color: #1e293b;
+        margin: 0 0 1rem 0;
+    }
+
+    .empty-text {
+        font-size: 1.1rem;
+        color: #64748b;
+        margin: 0 0 2rem 0;
+        line-height: 1.6;
+    }
+
+    .btn-empty-action {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 1rem 2.5rem;
+        border-radius: 50px;
+        font-weight: 700;
+        font-size: 1.1rem;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-empty-action:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+        color: white;
+    }
+
+    @@media (max-width: 768px) {
+        .hero-title {
+            font-size: 2.5rem;
+        }
+
+        .collections-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .hero-content {
+            text-align: center;
+        }
+
+        .btn-hero-primary {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+</style>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+}
+
