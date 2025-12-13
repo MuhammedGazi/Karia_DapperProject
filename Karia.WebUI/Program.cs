@@ -2,6 +2,8 @@ using Karia.WebUI.Context;
 using Karia.WebUI.Repositories.CategoryRepositories;
 using Karia.WebUI.Repositories.CollectionRepositories;
 using Karia.WebUI.Repositories.ProductRepositories;
+using Karia.WebUI.Repositories.TestimonialRepositories;
+using Karia.WebUI.Repositories.VidesRepositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +11,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ICollectionRepository, CollectionRepository>();
+builder.Services.AddScoped<ITestimonialRepository, TestimonialRepository>();
+builder.Services.AddScoped<IVidesRepository, VidesRepository>();
 builder.Services.AddScoped<AppDbContext>();
 
 builder.Services.AddControllersWithViews();

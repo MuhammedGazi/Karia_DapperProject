@@ -1,0 +1,702 @@
+﻿@model ResultTestimonialDto
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="create-testimonial-wrapper">
+    <!-- Animated Background -->
+    <div class="animated-background">
+        <div class="bubble bubble-1"></div>
+        <div class="bubble bubble-2"></div>
+        <div class="bubble bubble-3"></div>
+        <div class="bubble bubble-4"></div>
+    </div>
+
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <!-- Breadcrumb Navigation -->
+                <div class="breadcrumb-nav">
+                    <a asp-action="Index" asp-controller="Testimonial" class="breadcrumb-link">
+                        <i class="bi bi-arrow-left"></i>
+                        <span>Yorumlara Dön</span>
+                    </a>
+                    <span class="breadcrumb-separator">/</span>
+                    <span class="breadcrumb-current">Yeni Yorum</span>
+                </div>
+
+                <!-- Main Card -->
+                <div class="create-card">
+                    <div class="card-decoration">
+                        <div class="decoration-circle"></div>
+                        <div class="decoration-line"></div>
+                    </div>
+
+                    <!-- Card Header -->
+                    <div class="card-header-section">
+                        <div class="header-icon-large">
+                            <i class="bi bi-chat-heart-fill"></i>
+                        </div>
+                        <div class="header-content">
+                            <h1 class="card-title">Yeni Müşteri Yorumu</h1>
+                            <p class="card-subtitle">Müşteri geri bildirimlerini kolayca ekleyin ve yönetin</p>
+                        </div>
+                    </div>
+
+                    <!-- Form -->
+                    <form method="post" asp-action="Create" asp-controller="Testimonial" class="testimonial-form">
+                        <div class="form-section">
+                            <div class="section-label">
+                                <span class="label-number">01</span>
+                                <span class="label-text">Müşteri Bilgisi</span>
+                            </div>
+
+                            <div class="form-group-modern">
+                                <label class="form-label-modern">
+                                    <i class="bi bi-person-fill"></i>
+                                    <span>Ad Soyad</span>
+                                </label>
+                                <div class="input-container">
+                                    <input type="text"
+                                           class="form-input-modern"
+                                           asp-for="NameSurname"
+                                           placeholder="Örn: Ahmet Yılmaz"
+                                           required />
+                                    <div class="input-line"></div>
+                                </div>
+                                <span class="input-hint">
+                                    <i class="bi bi-info-circle"></i>
+                                    Müşterinin tam adını giriniz
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <div class="section-label">
+                                <span class="label-number">02</span>
+                                <span class="label-text">Yorum İçeriği</span>
+                            </div>
+
+                            <div class="form-group-modern">
+                                <label class="form-label-modern">
+                                    <i class="bi bi-chat-quote-fill"></i>
+                                    <span>Müşteri Yorumu</span>
+                                </label>
+                                <div class="input-container">
+                                    <textarea class="form-input-modern form-textarea"
+                                              asp-for="Comment"
+                                              rows="8"
+                                              placeholder="Müşterinin deneyimi hakkındaki yorumunu buraya yazın..."
+                                              maxlength="500"
+                                              required></textarea>
+                                    <div class="input-line"></div>
+                                </div>
+                                <div class="textarea-footer">
+                                    <span class="input-hint">
+                                        <i class="bi bi-lightbulb"></i>
+                                        Samimi ve doğal yorumlar daha etkilidir
+                                    </span>
+                                    <span class="char-counter" id="charCounter">0 / 500</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Preview Section -->
+                        <div class="preview-section">
+                            <div class="preview-label">
+                                <i class="bi bi-eye"></i>
+                                <span>Önizleme</span>
+                            </div>
+                            <div class="preview-card">
+                                <div class="preview-quote-icon">
+                                    <i class="bi bi-quote"></i>
+                                </div>
+                                <div class="preview-customer">
+                                    <div class="preview-avatar" id="previewAvatar">?</div>
+                                    <div class="preview-info">
+                                        <span class="preview-name" id="previewName">İsim girilmedi</span>
+                                        <span class="preview-badge">Müşteri</span>
+                                    </div>
+                                </div>
+                                <p class="preview-comment" id="previewComment">Yorum henüz girilmedi...</p>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="form-actions">
+                            <button type="button" onclick="history.back()" class="btn-secondary-action">
+                                <i class="bi bi-x-circle"></i>
+                                <span>İptal</span>
+                            </button>
+                            <button type="reset" class="btn-secondary-action" id="resetBtn">
+                                <i class="bi bi-arrow-counterclockwise"></i>
+                                <span>Temizle</span>
+                            </button>
+                            <button type="submit" class="btn-primary-action">
+                                <span class="btn-shine-effect"></span>
+                                <i class="bi bi-check-circle-fill"></i>
+                                <span>Yorumu Kaydet</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Help Card -->
+                <div class="help-card">
+                    <i class="bi bi-lightbulb-fill"></i>
+                    <div class="help-content">
+                        <strong>İpucu:</strong> Müşteri yorumları web sitenizin güvenilirliğini artırır.
+                        Gerçek ve samimi yorumlar eklemeye özen gösterin.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .create-testimonial-wrapper {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .animated-background {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .bubble {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        animation: float-up 15s infinite;
+    }
+
+    .bubble-1 {
+        width: 80px;
+        height: 80px;
+        left: 10%;
+        animation-delay: 0s;
+    }
+
+    .bubble-2 {
+        width: 60px;
+        height: 60px;
+        left: 40%;
+        animation-delay: 2s;
+    }
+
+    .bubble-3 {
+        width: 100px;
+        height: 100px;
+        left: 70%;
+        animation-delay: 4s;
+    }
+
+    .bubble-4 {
+        width: 50px;
+        height: 50px;
+        left: 85%;
+        animation-delay: 6s;
+    }
+
+    @@keyframes float-up {
+        0% {
+            transform: translateY(100vh) scale(0);
+            opacity: 0;
+        }
+
+        10% {
+            opacity: 1;
+        }
+
+        90% {
+            opacity: 1;
+        }
+
+        100% {
+            transform: translateY(-100vh) scale(1);
+            opacity: 0;
+        }
+    }
+
+    .breadcrumb-nav {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        padding: 1rem 1.5rem;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 50px;
+        width: fit-content;
+    }
+
+    .breadcrumb-link {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: white;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+        .breadcrumb-link:hover {
+            color: white;
+            transform: translateX(-3px);
+        }
+
+    .breadcrumb-separator {
+        color: rgba(255, 255, 255, 0.5);
+    }
+
+    .breadcrumb-current {
+        color: white;
+        font-weight: 600;
+    }
+
+    .create-card {
+        position: relative;
+        background: white;
+        border-radius: 30px;
+        padding: 3rem;
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+    }
+
+    .card-decoration {
+        position: absolute;
+        top: -50px;
+        right: -50px;
+        width: 200px;
+        height: 200px;
+        pointer-events: none;
+    }
+
+    .decoration-circle {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        opacity: 0.1;
+    }
+
+    .decoration-line {
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        width: 160px;
+        height: 4px;
+        background: linear-gradient(90deg, #667eea, transparent);
+        border-radius: 2px;
+    }
+
+    .card-header-section {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        margin-bottom: 3rem;
+        padding-bottom: 2rem;
+        border-bottom: 2px solid #f1f5f9;
+    }
+
+    .header-icon-large {
+        width: 90px;
+        height: 90px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 3rem;
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        flex-shrink: 0;
+    }
+
+    .card-title {
+        font-size: 2rem;
+        font-weight: 800;
+        color: #1e293b;
+        margin: 0 0 0.5rem 0;
+    }
+
+    .card-subtitle {
+        font-size: 1rem;
+        color: #64748b;
+        margin: 0;
+    }
+
+    .form-section {
+        margin-bottom: 3rem;
+    }
+
+    .section-label {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .label-number {
+        width: 45px;
+        height: 45px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 1.1rem;
+    }
+
+    .label-text {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #1e293b;
+    }
+
+    .form-group-modern {
+        position: relative;
+    }
+
+    .form-label-modern {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #475569;
+        margin-bottom: 1rem;
+    }
+
+        .form-label-modern i {
+            color: #667eea;
+            font-size: 1.2rem;
+        }
+
+    .input-container {
+        position: relative;
+    }
+
+    .form-input-modern {
+        width: 100%;
+        padding: 1.25rem 1.5rem;
+        border: 2px solid #e2e8f0;
+        border-radius: 15px;
+        font-size: 1.1rem;
+        color: #1e293b;
+        background: white;
+        transition: all 0.3s ease;
+    }
+
+        .form-input-modern:focus {
+            outline: none;
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+
+            .form-input-modern:focus + .input-line {
+                width: 100%;
+            }
+
+    .input-line {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #667eea, #764ba2);
+        transition: width 0.3s ease;
+        border-radius: 15px;
+    }
+
+    .form-textarea {
+        resize: vertical;
+        min-height: 150px;
+        line-height: 1.8;
+        font-family: inherit;
+    }
+
+    .input-hint {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+        color: #94a3b8;
+        margin-top: 0.75rem;
+    }
+
+    .textarea-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 0.75rem;
+    }
+
+    .char-counter {
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: #667eea;
+    }
+
+    .preview-section {
+        margin: 3rem 0;
+        padding: 2rem;
+        background: #f8fafc;
+        border-radius: 20px;
+        border: 2px dashed #cbd5e0;
+    }
+
+    .preview-label {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #475569;
+        margin-bottom: 1.5rem;
+    }
+
+    .preview-card {
+        background: white;
+        border-radius: 15px;
+        padding: 2rem;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        position: relative;
+    }
+
+    .preview-quote-icon {
+        position: absolute;
+        top: -15px;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.5rem;
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+    }
+
+    .preview-customer {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .preview-avatar {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.5rem;
+        font-weight: 700;
+    }
+
+    .preview-name {
+        display: block;
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 0.25rem;
+    }
+
+    .preview-badge {
+        display: inline-block;
+        font-size: 0.75rem;
+        color: #667eea;
+        background: #f0f4ff;
+        padding: 0.25rem 0.75rem;
+        border-radius: 12px;
+        font-weight: 600;
+    }
+
+    .preview-comment {
+        font-size: 1rem;
+        color: #475569;
+        line-height: 1.7;
+        font-style: italic;
+        margin: 0;
+        padding: 1.25rem;
+        background: #f8fafc;
+        border-radius: 12px;
+        border-left: 4px solid #667eea;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: flex-end;
+        margin-top: 2rem;
+        padding-top: 2rem;
+        border-top: 2px solid #f1f5f9;
+    }
+
+    .btn-secondary-action {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 1rem 1.75rem;
+        background: #f1f5f9;
+        border: 2px solid #e2e8f0;
+        border-radius: 15px;
+        color: #64748b;
+        font-weight: 700;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+        .btn-secondary-action:hover {
+            background: #e2e8f0;
+            transform: translateY(-2px);
+        }
+
+    .btn-primary-action {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem 2.5rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        border-radius: 15px;
+        color: white;
+        font-weight: 700;
+        font-size: 1.05rem;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        transition: all 0.3s ease;
+    }
+
+        .btn-primary-action:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+        }
+
+    .btn-shine-effect {
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        transition: left 0.5s ease;
+    }
+
+    .btn-primary-action:hover .btn-shine-effect {
+        left: 100%;
+    }
+
+    .help-card {
+        margin-top: 2rem;
+        padding: 1.5rem;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        display: flex;
+        align-items: start;
+        gap: 1rem;
+        color: #475569;
+        font-size: 0.95rem;
+    }
+
+        .help-card i {
+            color: #f59e0b;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+    @@media (max-width: 768px) {
+        .create-card {
+            padding: 2rem 1.5rem;
+        }
+
+        .card-header-section {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .form-actions {
+            flex-direction: column;
+        }
+
+        .btn-secondary-action,
+        .btn-primary-action {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+</style>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const nameInput = document.querySelector('input[asp-for="NameSurname"]');
+            const commentInput = document.querySelector('textarea[asp-for="Comment"]');
+            const previewName = document.getElementById('previewName');
+            const previewAvatar = document.getElementById('previewAvatar');
+            const previewComment = document.getElementById('previewComment');
+            const charCounter = document.getElementById('charCounter');
+
+            // Update preview name and avatar
+            nameInput.addEventListener('input', function() {
+                const name = this.value.trim();
+                if (name) {
+                    previewName.textContent = name;
+                    previewAvatar.textContent = name.substring(0, 1).toUpperCase();
+                } else {
+                    previewName.textContent = 'İsim girilmedi';
+                    previewAvatar.textContent = '?';
+                }
+            });
+
+            // Update preview comment and character counter
+            commentInput.addEventListener('input', function() {
+                const comment = this.value.trim();
+                const length = this.value.length;
+
+                charCounter.textContent = length + ' / 500';
+
+                if (comment) {
+                    previewComment.textContent = comment;
+                    previewComment.style.fontStyle = 'italic';
+                } else {
+                    previewComment.textContent = 'Yorum henüz girilmedi...';
+                    previewComment.style.fontStyle = 'normal';
+                }
+            });
+
+            // Reset button
+            document.getElementById('resetBtn').addEventListener('click', function() {
+                setTimeout(() => {
+                    previewName.textContent = 'İsim girilmedi';
+                    previewAvatar.textContent = '?';
+                    previewComment.textContent = 'Yorum henüz girilmedi...';
+                    charCounter.textContent = '0 / 500';
+                }, 0);
+            });
+        });
+    </script>
+}
+

@@ -1,0 +1,616 @@
+﻿@model IEnumerable<ResultTestimonialDto>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="testimonials-wrapper">
+    <div class="container py-5">
+        <!-- Header Section -->
+        <div class="testimonials-header">
+            <div class="header-backdrop"></div>
+            <div class="header-content-wrapper">
+                <div class="header-left">
+                    <div class="icon-badge">
+                        <i class="bi bi-chat-quote-fill"></i>
+                    </div>
+                    <div class="header-text">
+                        <span class="header-subtitle">Feedback Management</span>
+                        <h1 class="header-title">Müşteri Yorumları</h1>
+                        <p class="header-description">
+                            Müşterilerinizin değerli geri bildirimlerini yönetin
+                        </p>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <a asp-action="Create" asp-controller="Testimonial" class="btn-add-new">
+                        <span class="btn-icon-wrapper">
+                            <i class="bi bi-plus-lg"></i>
+                        </span>
+                        <span class="btn-text">Yeni Yorum Ekle</span>
+                        <span class="btn-arrow">
+                            <i class="bi bi-arrow-right"></i>
+                        </span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-icon blue">
+                    <i class="bi bi-chat-dots-fill"></i>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-label">Toplam Yorum</span>
+                    <span class="stat-value">@(Model?.Count() ?? 0)</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon green">
+                    <i class="bi bi-star-fill"></i>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-label">Aktif Yorumlar</span>
+                    <span class="stat-value">@(Model?.Count() ?? 0)</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon orange">
+                    <i class="bi bi-graph-up-arrow"></i>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-label">Bu Ay</span>
+                    <span class="stat-value">--</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Testimonials List -->
+        @if (Model != null && Model.Any())
+        {
+            <div class="testimonials-grid">
+                @foreach (var testimonial in Model)
+                {
+                    <div class="testimonial-card">
+                        <div class="card-header-section">
+                            <div class="quote-icon">
+                                <i class="bi bi-quote"></i>
+                            </div>
+                            <div class="card-id">ID: @testimonial.TestimonialId</div>
+                        </div>
+                        
+                        <div class="card-body-section">
+                            <div class="customer-info">
+                                <div class="customer-avatar">
+                                    @testimonial.NameSurname.Substring(0, 1).ToUpper()
+                                </div>
+                                <div class="customer-details">
+                                    <h3 class="customer-name">@testimonial.NameSurname</h3>
+                                    <span class="customer-badge">Müşteri</span>
+                                </div>
+                            </div>
+
+                            <div class="comment-section">
+                                <p class="comment-text">
+                                    @if (!string.IsNullOrEmpty(testimonial.Comment))
+                                    {
+                                        @(testimonial.Comment.Length > 150 ? testimonial.Comment.Substring(0, 150) + "..." : testimonial.Comment)
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">Yorum bulunmuyor...</span>
+                                    }
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="card-footer-section">
+                            <div class="action-buttons">
+                                <a asp-action="Details" asp-controller="Testimonial" asp-route-id="@testimonial.TestimonialId" 
+                                   class="action-btn view-btn" title="Detayları Gör">
+                                    <i class="bi bi-eye"></i>
+                                    <span>Detay</span>
+                                </a>
+                                <a asp-action="Update" asp-controller="Testimonial" asp-route-id="@testimonial.TestimonialId" 
+                                   class="action-btn edit-btn" title="Düzenle">
+                                    <i class="bi bi-pencil"></i>
+                                    <span>Düzenle</span>
+                                </a>
+                                <a asp-action="Delete" asp-controller="Testimonial" asp-route-id="@testimonial.TestimonialId" 
+                                   class="action-btn delete-btn" title="Sil">
+                                    <i class="bi bi-trash"></i>
+                                    <span>Sil</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="empty-state">
+                <div class="empty-icon">
+                    <i class="bi bi-chat-quote"></i>
+                </div>
+                <h2 class="empty-title">Henüz Yorum Bulunmuyor</h2>
+                <p class="empty-text">İlk müşteri yorumunu ekleyerek başlayın</p>
+                <a asp-action="Create" asp-controller="Testimonial" class="btn-empty-action">
+                    <i class="bi bi-plus-circle-fill"></i>
+                    İlk Yorumu Ekle
+                </a>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .testimonials-wrapper {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        position: relative;
+    }
+
+    .testimonials-wrapper::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        opacity: 0.3;
+    }
+
+    .testimonials-header {
+        position: relative;
+        margin-bottom: 3rem;
+        border-radius: 25px;
+        overflow: hidden;
+    }
+
+    .header-backdrop {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .header-content-wrapper {
+        position: relative;
+        z-index: 1;
+        padding: 2.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 2rem;
+    }
+
+    .header-left {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        flex: 1;
+    }
+
+    .icon-badge {
+        width: 80px;
+        height: 80px;
+        background: white;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #667eea;
+        font-size: 2.5rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        flex-shrink: 0;
+    }
+
+    .header-subtitle {
+        display: block;
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.8);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 0.5rem;
+    }
+
+    .header-title {
+        font-size: 3rem;
+        font-weight: 900;
+        color: white;
+        margin-bottom: 0.5rem;
+        text-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .header-description {
+        font-size: 1.1rem;
+        color: rgba(255, 255, 255, 0.9);
+        margin: 0;
+    }
+
+    .btn-add-new {
+        display: inline-flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem 2rem;
+        background: white;
+        color: #667eea;
+        border-radius: 50px;
+        font-weight: 700;
+        font-size: 1.1rem;
+        text-decoration: none;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-add-new::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.2), transparent);
+        transition: left 0.5s ease;
+    }
+
+    .btn-add-new:hover::before {
+        left: 100%;
+    }
+
+    .btn-add-new:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        color: #667eea;
+    }
+
+    .btn-icon-wrapper {
+        display: flex;
+        align-items: center;
+        font-size: 1.3rem;
+    }
+
+    .btn-arrow {
+        display: flex;
+        align-items: center;
+        transition: transform 0.3s ease;
+    }
+
+    .btn-add-new:hover .btn-arrow {
+        transform: translateX(5px);
+    }
+
+    .stats-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+    }
+
+    .stat-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 20px;
+        padding: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .stat-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.8rem;
+        flex-shrink: 0;
+    }
+
+    .stat-icon.blue {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .stat-icon.green {
+        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    }
+
+    .stat-icon.orange {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    }
+
+    .stat-info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+
+    .stat-label {
+        font-size: 0.9rem;
+        color: #64748b;
+        font-weight: 600;
+    }
+
+    .stat-value {
+        font-size: 2rem;
+        font-weight: 800;
+        color: #1e293b;
+    }
+
+    .testimonials-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+        gap: 2rem;
+    }
+
+    .testimonial-card {
+        background: white;
+        border-radius: 20px;
+        overflow: visible;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        z-index: 1;
+    }
+
+    .testimonial-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+    }
+
+    .card-header-section {
+        padding: 1.5rem;
+        background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .quote-icon {
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.5rem;
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+    }
+
+    .card-id {
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: #667eea;
+        background: white;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+    }
+
+    .card-body-section {
+        padding: 1.5rem;
+        flex-grow: 1;
+    }
+
+    .customer-info {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .customer-avatar {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.5rem;
+        font-weight: 700;
+        flex-shrink: 0;
+    }
+
+    .customer-name {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #1e293b;
+        margin: 0 0 0.25rem 0;
+    }
+
+    .customer-badge {
+        display: inline-block;
+        font-size: 0.75rem;
+        color: #667eea;
+        background: #f0f4ff;
+        padding: 0.25rem 0.75rem;
+        border-radius: 12px;
+        font-weight: 600;
+    }
+
+    .comment-section {
+        background: #f8fafc;
+        padding: 1.25rem;
+        border-radius: 15px;
+        border-left: 4px solid #667eea;
+    }
+
+    .comment-text {
+        font-size: 1rem;
+        color: #475569;
+        line-height: 1.7;
+        margin: 0;
+        font-style: italic;
+    }
+
+    .card-footer-section {
+        padding: 1rem 1.5rem;
+        background: #f8f9ff;
+        border-top: 1px solid #e0e7ff;
+        position: relative;
+        z-index: 5;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 0.75rem;
+        position: relative;
+        z-index: 10;
+    }
+
+    .action-btn {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1rem;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        position: relative;
+        z-index: 10;
+        cursor: pointer;
+    }
+
+    .view-btn {
+        background: #e0f2fe;
+        color: #0284c7;
+    }
+
+    .view-btn:hover {
+        background: #0284c7;
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    .edit-btn {
+        background: #fef3c7;
+        color: #d97706;
+    }
+
+    .edit-btn:hover {
+        background: #d97706;
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    .delete-btn {
+        background: #fee2e2;
+        color: #dc2626;
+    }
+
+    .delete-btn:hover {
+        background: #dc2626;
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 5rem 2rem;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 25px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+    }
+
+    .empty-icon {
+        font-size: 6rem;
+        color: #cbd5e0;
+        margin-bottom: 1.5rem;
+    }
+
+    .empty-title {
+        font-size: 2rem;
+        font-weight: 800;
+        color: #1e293b;
+        margin-bottom: 1rem;
+    }
+
+    .empty-text {
+        font-size: 1.2rem;
+        color: #64748b;
+        margin-bottom: 2rem;
+    }
+
+    .btn-empty-action {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 1rem 2.5rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 50px;
+        font-weight: 700;
+        font-size: 1.1rem;
+        text-decoration: none;
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        transition: all 0.3s ease;
+    }
+
+    .btn-empty-action:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+        color: white;
+    }
+
+    @@media (max-width: 768px) {
+        .header-title {
+            font-size: 2rem;
+        }
+
+        .testimonials-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .header-content-wrapper {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .header-left {
+            flex-direction: column;
+        }
+    }
+</style>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+}

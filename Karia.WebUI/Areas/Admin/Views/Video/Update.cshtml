@@ -1,0 +1,900 @@
+﻿@model UpdateVideoDto
+@{
+    ViewData["Title"] = "Update";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="update-video-wrapper">
+    <!-- Animated Grid Background -->
+    <div class="grid-background"></div>
+    <div class="gradient-overlay"></div>
+
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-xxl-11">
+                <!-- Top Control Bar -->
+                <div class="control-bar">
+                    <div class="control-left">
+                        <a asp-action="Index" asp-controller="Video" class="control-btn back">
+                            <i class="bi bi-arrow-left-square"></i>
+                            <span>Galeriye Dön</span>
+                        </a>
+                        <div class="control-divider"></div>
+                        <div class="control-status">
+                            <span class="status-icon">
+                                <i class="bi bi-pencil-square"></i>
+                            </span>
+                            <span class="status-text">Düzenleme Modu</span>
+                        </div>
+                    </div>
+                    <div class="control-right">
+                        <button type="button"
+                                class="control-btn danger"
+                                onclick="if(confirm('Bu videoyu silmek istediğinizden emin misiniz?')) window.location.href='@Url.Action("Delete", "Video", new { id = Model.VideoId })'">
+                            <i class="bi bi-trash3-fill"></i>
+                            <span>Videoyu Sil</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Main Update Layout -->
+                <div class="update-layout">
+                    <form method="post" asp-action="Update" asp-controller="Video" id="updateForm">
+                        <input type="hidden" asp-for="VideoId" />
+
+                        <div class="row g-4">
+                            <!-- Left Panel - Form -->
+                            <div class="col-lg-7">
+                                <div class="form-panel">
+                                    <!-- Video ID Card -->
+                                    <div class="id-card">
+                                        <div class="id-icon-wrapper">
+                                            <i class="bi bi-hash"></i>
+                                        </div>
+                                        <div class="id-info">
+                                            <span class="id-label">Video ID</span>
+                                            <span class="id-number">@Model.VideoId</span>
+                                        </div>
+                                        <div class="id-badge">
+                                            <span class="badge-pulse"></span>
+                                            <span>Aktif</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Video URL Field -->
+                                    <div class="field-container">
+                                        <div class="field-label-section">
+                                            <div class="field-icon-box">
+                                                <i class="bi bi-play-circle-fill"></i>
+                                            </div>
+                                            <div class="field-label-content">
+                                                <label class="field-label">Video URL</label>
+                                                <p class="field-description">YouTube, Vimeo veya diğer video platformları</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="field-input-group">
+                                            <input type="text"
+                                                   class="field-input"
+                                                   asp-for="Url"
+                                                   placeholder="https://..."
+                                                   id="videoUrlInput"
+                                                   required />
+                                            <div class="field-underline"></div>
+                                            <div class="field-input-icon">
+                                                <i class="bi bi-link-45deg"></i>
+                                            </div>
+                                        </div>
+
+                                        <div class="field-actions">
+                                            <a href="@Model.Url" target="_blank" class="field-link-btn">
+                                                <i class="bi bi-box-arrow-up-right"></i>
+                                                <span>Videoyu Aç</span>
+                                            </a>
+                                            <button type="button" class="field-link-btn" onclick="navigator.clipboard.writeText('@Model.Url')">
+                                                <i class="bi bi-clipboard"></i>
+                                                <span>Linki Kopyala</span>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Background Image Field -->
+                                    <div class="field-container">
+                                        <div class="field-label-section">
+                                            <div class="field-icon-box">
+                                                <i class="bi bi-image-fill"></i>
+                                            </div>
+                                            <div class="field-label-content">
+                                                <label class="field-label">Arka Plan Görseli</label>
+                                                <p class="field-description">Video thumbnail / kapak görseli URL'si</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="field-input-group">
+                                            <input type="text"
+                                                   class="field-input"
+                                                   asp-for="BackgroundImageUrl"
+                                                   placeholder="https://..."
+                                                   id="imageUrlInput" />
+                                            <div class="field-underline"></div>
+                                            <div class="field-input-icon">
+                                                <i class="bi bi-image"></i>
+                                            </div>
+                                        </div>
+
+                                        <div class="image-specs">
+                                            <div class="spec-item">
+                                                <i class="bi bi-aspect-ratio"></i>
+                                                <span>16:9 Oran Önerilir</span>
+                                            </div>
+                                            <div class="spec-item">
+                                                <i class="bi bi-file-earmark-image"></i>
+                                                <span>JPG, PNG, WebP</span>
+                                            </div>
+                                            <div class="spec-item">
+                                                <i class="bi bi-arrows-fullscreen"></i>
+                                                <span>1920x1080 px</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Action Buttons -->
+                                    <div class="action-buttons-panel">
+                                        <button type="button" onclick="history.back()" class="action-btn secondary">
+                                            <i class="bi bi-x-circle"></i>
+                                            <span>İptal</span>
+                                        </button>
+                                        <button type="button" onclick="location.reload()" class="action-btn secondary">
+                                            <i class="bi bi-arrow-clockwise"></i>
+                                            <span>Geri Al</span>
+                                        </button>
+                                        <button type="submit" class="action-btn primary">
+                                            <span class="btn-shimmer"></span>
+                                            <i class="bi bi-check-circle-fill"></i>
+                                            <span>Değişiklikleri Kaydet</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Right Panel - Preview -->
+                            <div class="col-lg-5">
+                                <div class="preview-panel">
+                                    <div class="preview-header">
+                                        <i class="bi bi-eye-fill"></i>
+                                        <span>Canlı Önizleme</span>
+                                        <div class="preview-badge">
+                                            <span class="badge-dot"></span>
+                                            <span>Live</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="preview-content">
+                                        <!-- Video Preview Card -->
+                                        <div class="preview-video-card">
+                                            <div class="preview-thumbnail" id="previewThumbnail">
+                                                @if (!string.IsNullOrEmpty(Model.BackgroundImageUrl))
+                                                {
+                                                    <img src="@Model.BackgroundImageUrl" alt="Preview" class="preview-img" />
+                                                }
+                                                else
+                                                {
+                                                    <div class="preview-placeholder">
+                                                        <i class="bi bi-play-btn"></i>
+                                                        <span>Arka Plan Yok</span>
+                                                    </div>
+                                                }
+                                                <div class="preview-play-overlay">
+                                                    <div class="preview-play-btn">
+                                                        <i class="bi bi-play-fill"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="preview-info-section">
+                                                <div class="preview-meta">
+                                                    <span class="meta-badge video">
+                                                        <i class="bi bi-camera-video"></i>
+                                                        Video
+                                                    </span>
+                                                    <span class="meta-badge id">
+                                                        ID: @Model.VideoId
+                                                    </span>
+                                                </div>
+
+                                                <div class="preview-url-box">
+                                                    <label class="preview-url-label">
+                                                        <i class="bi bi-link"></i>
+                                                        Video Linki
+                                                    </label>
+                                                    <div class="preview-url-display" id="previewUrl">
+                                                        @Model.Url
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Stats -->
+                                        <div class="preview-stats">
+                                            <div class="stat-box">
+                                                <i class="bi bi-eye"></i>
+                                                <div class="stat-details">
+                                                    <span class="stat-value">--</span>
+                                                    <span class="stat-label">Görüntülenme</span>
+                                                </div>
+                                            </div>
+                                            <div class="stat-box">
+                                                <i class="bi bi-heart"></i>
+                                                <div class="stat-details">
+                                                    <span class="stat-value">--</span>
+                                                    <span class="stat-label">Beğeni</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Quick Tips -->
+                                        <div class="quick-tips">
+                                            <div class="tip-header">
+                                                <i class="bi bi-lightbulb"></i>
+                                                <span>Hızlı İpuçları</span>
+                                            </div>
+                                            <ul class="tip-list">
+                                                <li>
+                                                    <i class="bi bi-check2"></i>
+                                                    <span>Değişiklikler otomatik önizlenir</span>
+                                                </li>
+                                                <li>
+                                                    <i class="bi bi-check2"></i>
+                                                    <span>Geçerli URL formatı kullanın</span>
+                                                </li>
+                                                <li>
+                                                    <i class="bi bi-check2"></i>
+                                                    <span>Yüksek çözünürlük önerilir</span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .update-video-wrapper {
+        min-height: 100vh;
+        background: #0a0e27;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .grid-background {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-image: linear-gradient(rgba(139, 92, 246, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(139, 92, 246, 0.05) 1px, transparent 1px);
+        background-size: 50px 50px;
+        animation: grid-move 20s linear infinite;
+    }
+
+    @@keyframes grid-move {
+        0% {
+            transform: translate(0, 0);
+        }
+
+        100% {
+            transform: translate(50px, 50px);
+        }
+    }
+
+    .gradient-overlay {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at 30% 50%, rgba(139, 92, 246, 0.15) 0%, transparent 50%), radial-gradient(circle at 70% 80%, rgba(59, 130, 246, 0.15) 0%, transparent 50%);
+    }
+
+    .control-bar {
+        position: relative;
+        z-index: 10;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.25rem 1.75rem;
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 20px;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .control-left {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+    }
+
+    .control-btn {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.75rem 1.25rem;
+        border-radius: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        border: 1px solid transparent;
+    }
+
+        .control-btn.back {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+        }
+
+            .control-btn.back:hover {
+                background: rgba(255, 255, 255, 0.1);
+                transform: translateX(-3px);
+                color: white;
+            }
+
+        .control-btn.danger {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+        }
+
+            .control-btn.danger:hover {
+                background: #ef4444;
+                color: white;
+                transform: translateY(-2px);
+            }
+
+    .control-divider {
+        width: 1px;
+        height: 40px;
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .control-status {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        color: rgba(255, 255, 255, 0.8);
+        font-weight: 600;
+    }
+
+    .status-icon {
+        width: 35px;
+        height: 35px;
+        background: rgba(139, 92, 246, 0.2);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #8b5cf6;
+    }
+
+    .update-layout {
+        position: relative;
+        z-index: 10;
+    }
+
+    .form-panel {
+        background: rgba(255, 255, 255, 0.98);
+        border-radius: 25px;
+        padding: 2.5rem;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    }
+
+    .id-card {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        padding: 1.75rem;
+        background: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%);
+        border-radius: 20px;
+        margin-bottom: 2rem;
+        color: white;
+    }
+
+    .id-icon-wrapper {
+        width: 60px;
+        height: 60px;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+    }
+
+    .id-label {
+        display: block;
+        font-size: 0.9rem;
+        opacity: 0.9;
+        margin-bottom: 0.25rem;
+    }
+
+    .id-number {
+        display: block;
+        font-size: 2rem;
+        font-weight: 900;
+    }
+
+    .id-badge {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        font-weight: 600;
+    }
+
+    .badge-pulse {
+        width: 8px;
+        height: 8px;
+        background: #10b981;
+        border-radius: 50%;
+        animation: pulse-badge 2s ease-in-out infinite;
+    }
+
+    @@keyframes pulse-badge {
+        0%, 100% {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        50% {
+            opacity: 0.5;
+            transform: scale(1.2);
+        }
+    }
+
+    .field-container {
+        margin-bottom: 2.5rem;
+    }
+
+    .field-label-section {
+        display: flex;
+        gap: 1.25rem;
+        margin-bottom: 1.25rem;
+    }
+
+    .field-icon-box {
+        width: 55px;
+        height: 55px;
+        background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #8b5cf6;
+        font-size: 1.5rem;
+        flex-shrink: 0;
+    }
+
+    .field-label {
+        display: block;
+        font-size: 1.2rem;
+        font-weight: 800;
+        color: #1e293b;
+        margin-bottom: 0.25rem;
+    }
+
+    .field-description {
+        font-size: 0.95rem;
+        color: #64748b;
+        margin: 0;
+    }
+
+    .field-input-group {
+        position: relative;
+        margin-bottom: 1rem;
+    }
+
+    .field-input {
+        width: 100%;
+        padding: 1.25rem 3.5rem 1.25rem 1.5rem;
+        border: 2px solid #e2e8f0;
+        border-radius: 15px;
+        font-size: 1rem;
+        color: #1e293b;
+        transition: all 0.3s ease;
+        background: white;
+    }
+
+        .field-input:focus {
+            outline: none;
+            border-color: transparent;
+            background: #f8fafc;
+        }
+
+            .field-input:focus + .field-underline {
+                width: 100%;
+            }
+
+    .field-underline {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #8b5cf6, #3b82f6);
+        transition: width 0.4s ease;
+        border-radius: 15px;
+    }
+
+    .field-input-icon {
+        position: absolute;
+        right: 1.5rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #94a3b8;
+        font-size: 1.3rem;
+        pointer-events: none;
+    }
+
+    .field-actions {
+        display: flex;
+        gap: 0.75rem;
+    }
+
+    .field-link-btn {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.25rem;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        color: #64748b;
+        font-weight: 600;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+    }
+
+        .field-link-btn:hover {
+            background: #8b5cf6;
+            color: white;
+            border-color: #8b5cf6;
+            transform: translateY(-2px);
+        }
+
+    .image-specs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .spec-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        background: #f8fafc;
+        border-radius: 10px;
+        color: #64748b;
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+
+        .spec-item i {
+            color: #8b5cf6;
+        }
+
+    .action-buttons-panel {
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+        margin-top: 2rem;
+        padding-top: 2rem;
+        border-top: 2px solid #f1f5f9;
+    }
+
+    .action-btn {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 1rem 1.75rem;
+        border: none;
+        border-radius: 15px;
+        font-weight: 700;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .action-btn.secondary {
+            background: #f1f5f9;
+            color: #64748b;
+        }
+
+            .action-btn.secondary:hover {
+                background: #e2e8f0;
+                transform: translateY(-2px);
+            }
+
+        .action-btn.primary {
+            background: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%);
+            color: white;
+            padding: 1rem 2.5rem;
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.4);
+        }
+
+            .action-btn.primary:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 15px 40px rgba(139, 92, 246, 0.6);
+            }
+
+    .btn-shimmer {
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        transition: left 0.5s ease;
+    }
+
+    .action-btn.primary:hover .btn-shimmer {
+        left: 100%;
+    }
+
+    .preview-panel {
+        position: sticky;
+        top: 2rem;
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 25px;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    }
+
+    .preview-header {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 1.25rem 1.75rem;
+        background: rgba(255, 255, 255, 0.05);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        color: white;
+        font-weight: 700;
+    }
+
+    .preview-badge {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.4rem 0.9rem;
+        background: rgba(239, 68, 68, 0.2);
+        border: 1px solid rgba(239, 68, 68, 0.3);
+        border-radius: 20px;
+        font-size: 0.75rem;
+        color: #fca5a5;
+    }
+
+    .badge-dot {
+        width: 6px;
+        height: 6px;
+        background: #ef4444;
+        border-radius: 50%;
+        animation: blink-dot 1.5s ease-in-out infinite;
+    }
+
+    @@keyframes blink-dot {
+        0%, 100% {
+            opacity: 1;
+        }
+
+        50% {
+            opacity: 0.3;
+        }
+    }
+
+    .preview-content {
+        padding: 1.75rem;
+    }
+
+    .preview-video-card {
+        background: rgba(255, 255, 255, 0.98);
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        margin-bottom: 1.5rem;
+    }
+
+    .preview-thumbnail {
+        position: relative;
+        width: 100%;
+        padding-top: 56.25%;
+        background: #1e293b;
+        overflow: hidden;
+    }
+
+    .preview-img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .preview-placeholder {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: rgba(255, 255, 255, 0.3);
+        gap: 0.75rem;
+    }
+
+        .preview-placeholder i {
+            font-size: 3rem;
+        }
+
+    .preview-play-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .preview-play-btn {
+        width: 70px;
+        height: 70px;
+        background: rgba(139, 92, 246, 0.9);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 2rem;
+        padding-left: 5px;
+    }
+
+    .preview-info-section {
+        padding: 1.5rem;
+    }
+
+    .preview-meta {
+        display: flex;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+    }
+
+    .meta-badge {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        border-radius: 10px;
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+
+        .meta-badge.video {
+            background: rgba(139, 92, 246, 0.1);
+            color: #8b5cf6;
+        }
+
+        .meta-badge.id {
+            background: #f8fafc;
+            color: #64748b;
+        }
+
+    .preview-url-label {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #64748b;
+        margin-bottom: 0.5rem;
+    }
+
+    .preview-url-display {
+        padding: 0.75rem;
+        background: #f8fafc;
+        border-radius: 8px;
+        font-size: 0.75rem;
+        color: #475569;
+        font-family: 'Courier New', monospace;
+        word-break: break-all;
+    }
+
+    .preview-stats {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .stat-box {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 15px;
+    }
+
+        .stat-box i {
+            font-size: 1.5rem;
+            color: #8b5cf6;
+        }
+
+    .stat-value {
+        display: block;
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: white;
+    }
+
+    .stat-label {
+        display: block;
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.6);
+    }
+
+    .quick-tips {
+        background: rgba(251, 191, 36, 0.1);
+        border: 1px solid rgba(251, 191, 36, 0.2);
+        border-radius: 15px;
+        padding: 1.25rem;
+    }
+
+    .tip-header {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        color: #fbbf24;
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+
+    .tip-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+        .tip-list li {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+
+    .tip-list
+
