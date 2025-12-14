@@ -1,0 +1,35 @@
+﻿@model IEnumerable<ResultVideoDto>
+@*
+  _DefaultVideoComponentPartial
+*@
+<section class="video py-5 overflow-hidden">
+    <div class="container-fluid">
+        @foreach(var item in Model)
+        {
+            <div class="row">
+                <div class="video-content open-up" data-aos="zoom-out">
+                    <div class="video-bg">
+                        <img src="@item.BackgroundImageUrl" alt="video" class="video-image">
+                    </div>
+                    <div class="video-player">
+                        <a class="youtube" href="@item.Url">
+                            <svg width="24" height="24" viewBox="0 0 24 24">
+                                <use xlink:href="#play"></use>
+                            </svg>
+                            <img src="~/kaira-1.0.0/images/text-pattern.png" alt="pattern" class="text-rotate">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+
+<style>
+    .video-image {
+        width: 100%; /* Genişlik: Tam ekran */
+        height: 500px; /* Yükseklik: Sabit (Burayı isteğine göre değiştir) */
+        object-fit: cover; /* ÖNEMLİ: Resmi bozmadan kutuya sığdırır (fazlasını kırpar) */
+        object-position: center; /* Resmin ortasını odaklar */
+    }
+</style>

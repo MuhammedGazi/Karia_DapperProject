@@ -1,0 +1,85 @@
+﻿@model IEnumerable<ResultCollectionDto>
+@*
+    _DefaultCollectionComponentPartial
+*@
+<section class="collection bg-light position-relative py-5">
+    <div class="container">
+        <div class="row">
+            <div class="title-xlarge text-uppercase txt-fx domino">Collection</div>
+
+            <div class="swiper collection-swiper">
+                <div class="swiper-wrapper">
+
+                    @if (Model != null && Model.Any())
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <div class="swiper-slide">
+                                <div class="collection-item d-flex flex-wrap my-5">
+                                    <div class="col-md-6 column-container">
+                                        <div class="image-holder">
+                                            <img src="@item.ImageUrl" alt="@item.Title" class="product-image img-fluid">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 column-container bg-white">
+                                        <div class="collection-content p-5 m-0 m-md-5">
+                                            <h3 class="element-title text-uppercase">@item.Title</h3>
+                                            <p>@item.Description</p>
+                                            <a href="@item.ImageUrl" class="btn btn-dark text-uppercase mt-3">Shop Collection</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="alert alert-warning">Koleksiyon verisi bulunamadı.</div>
+                    }
+
+                </div>
+
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-pagination"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var collectionSwiper = new Swiper(".collection-swiper", {
+            slidesPerView: 1,      
+            spaceBetween: 0,       
+            loop: true,            
+            effect: 'fade',       
+            fadeEffect: {
+                crossFade: true
+            },
+            autoplay: {
+                delay: 5000,       
+                disableOnInteraction: false,
+            },
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+        });
+    });
+</script>
+
+<style>
+    .collection-swiper .swiper-button-next,
+    .collection-swiper .swiper-button-prev {
+        color: #000; 
+    }
+
+    .collection-swiper .swiper-pagination-bullet-active {
+        background-color: #000; 
+    }
+</style>

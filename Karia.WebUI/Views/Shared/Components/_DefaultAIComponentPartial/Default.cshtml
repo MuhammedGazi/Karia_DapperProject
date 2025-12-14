@@ -1,0 +1,89 @@
+﻿@*
+   _DefaultAIComponentPartial
+*@
+<section class="newsletter bg-light" style="background: url('/kaira-1.0.0/images/pattern-bg.png') no-repeat; background-size: cover;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 py-5 my-5">
+                <div class="subscribe-header text-center pb-3">
+                    <h3 class="section-title text-uppercase">Kafanız mı Karıştı?</h3>
+                    <p class="text-muted">
+                        Sevdiğiniz tarzı veya aradığınız ürünü yazın. Yapay zeka, kış sezonunun trendlerine göre size en uygun kombini önersin!
+                    </p>
+                </div>
+
+                <form id="aiForm" class="d-flex flex-wrap gap-2">
+                    <input type="text" id="userPrompt" name="prompt" placeholder="Örn: Vintage tarzda kaban önerisi..." class="form-control form-control-lg" required>
+                    <button type="button" onclick="askAI()" class="btn btn-dark btn-lg text-uppercase w-100 mt-2">
+                        <span id="btnText">Tavsiye İste</span>
+                        <span id="btnSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade" id="aiResultModal" tabindex="-1" aria-labelledby="aiModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-dark text-white">
+                <h5 class="modal-title" id="aiModalLabel">🤖 Stil Danışmanınızın Önerisi</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="aiLoading" class="text-center py-4 d-none">
+                    <div class="spinner-border text-primary" role="status"></div>
+                    <p class="mt-2">Kış trendleri taranıyor...</p>
+                </div>
+                <div id="aiResponseContent" class="fs-6 lh-lg text-dark">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                <a href="/Shop" class="btn btn-primary">Mağazayı Keşfet</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function askAI() {
+        var inputVal = document.getElementById("userPrompt").value;
+
+        if (!inputVal) {
+            alert("Lütfen bir şeyler yazın!");
+            return;
+        }
+
+        var btnText = document.getElementById("btnText");
+        var btnSpinner = document.getElementById("btnSpinner");
+        btnText.innerText = "Düşünüyor...";
+        btnSpinner.classList.remove("d-none");
+
+        var myModal = new bootstrap.Modal(document.getElementById('aiResultModal'));
+        document.getElementById("aiResponseContent").innerHTML = ""; 
+        document.getElementById("aiLoading").classList.remove("d-none");
+        myModal.show();
+
+        $.ajax({
+            url: '/Default/GetAiRecommendation', 
+            type: 'POST',
+            data: { prompt: inputVal },
+            success: function (response) {
+                document.getElementById("aiLoading").classList.add("d-none");
+
+                var formattedResponse = response.replace(/\n/g, "<br>");
+                document.getElementById("aiResponseContent").innerHTML = formattedResponse;
+            },
+            error: function () {
+                document.getElementById("aiLoading").classList.add("d-none");
+                document.getElementById("aiResponseContent").innerText = "Bir hata oluştu. Lütfen tekrar deneyin.";
+            },
+            complete: function() {
+                btnText.innerText = "Tavsiye İste";
+                btnSpinner.classList.add("d-none");
+            }
+        });
+    }
+</script>

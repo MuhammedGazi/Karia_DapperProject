@@ -37,6 +37,12 @@ namespace Karia.WebUI.Repositories.ProductRepositories
             return await _db.QueryFirstOrDefaultAsync<UpdateProductDto>(query, parameters);
         }
 
+        public async Task<IEnumerable<ResultProductDto>> GetLast6ProductsAsync()
+        {
+            string query = "SELECT TOP 6 p.ProductId,p.Name,p.ImageUrl,p.Description,p.Price,p.CategoryId,c.Name AS CategoryName FROM Products p INNER JOIN Categories c ON p.CategoryId = c.CategoryId ORDER BY p.ProductId DESC";
+            return await _db.QueryAsync<ResultProductDto>(query);
+        }
+
         public async Task UpdateAsync(UpdateProductDto dto)
         {
             string query = "update products set Name=@Name,ImageUrl=@ImageUrl,Description=@Description,Price=@Price,CategoryId=@CategoryId where ProductId=@ProductId";
